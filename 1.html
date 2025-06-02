@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игровой портал</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        .page {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .game-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .game-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Игровой портал</h1>
+    </header>
+
+    <nav>
+        <a href="#main" class="nav-link">Главная</a>
+        <a href="#action" class="nav-link">Экшен</a>
+        <a href="#rpg" class="nav-link">RPG</a>
+        <a href="#strategy" class="nav-link">Стратегии</a>
+        <a href="#sport" class="nav-link">Спортивные</a>
+        <a href="#contact" class="nav-link">Контакты</a>
+    </nav>
+
+    <div id="main" class="page">
+        <h2>Добро пожаловать!</h2>
+        <p>Этот сайт посвящен различным жанрам компьютерных игр. Выберите интересующий вас жанр в меню выше.</p>
+        <div class="game-list">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg" alt="The Witcher 3">
+                <h3>The Witcher 3</h3>
+                <p>Лучшая RPG 2015 года по версии The Game Awards.</p>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg" alt="Red Dead Redemption 2">
+                <h3>Red Dead Redemption 2</h3>
+                <p>Эпическая история о банде Ван дер Линде на Диком Западе.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="action" class="page hidden">
+        <h2>Экшен игры</h2>
+        <p>Динамичные игры с упором на действие, реакцию и адреналин.</p>
+        <div class="game-list">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" alt="GTA V">
+                <h3>GTA V</h3>
+                <p>Легендарная игра в жанре экшен-приключения.</p>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt="Elden Ring">
+                <h3>Elden Ring</h3>
+                <p>Эпическая action-RPG от создателей Dark Souls.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="rpg" class="page hidden">
+        <h2>Ролевые игры (RPG)</h2>
+        <p>Игры, где вы создаете и развиваете своего персонажа.</p>
+        <div class="game-list">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" alt="Baldur's Gate 3">
+                <h3>Baldur's Gate 3</h3>
+                <p>Новая глава легендарной RPG-серии.</p>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/236850/header.jpg" alt="Cyberpunk 2077">
+                <h3>Cyberpunk 2077</h3>
+                <p>RPG в стиле киберпанк от создателей The Witcher.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="strategy" class="page hidden">
+        <h2>Стратегии</h2>
+        <p>Игры, требующие тактического мышления и планирования.</p>
+        <div class="game-list">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/289070/header.jpg" alt="Civilization VI">
+                <h3>Civilization VI</h3>
+                <p>Постройте великую империю в этой пошаговой стратегии.</p>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/813780/header.jpg" alt="Age of Empires II">
+                <h3>Age of Empires II</h3>
+                <p>Классическая стратегия в реальном времени.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="sport" class="page hidden">
+        <h2>Спортивные игры</h2>
+        <p>Симуляторы различных видов спорта.</p>
+        <div class="game-list">
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1506830/header.jpg" alt="FIFA 23">
+                <h3>FIFA 23</h3>
+                <p>Последняя часть знаменитого футбольного симулятора.</p>
+            </div>
+            <div class="game-card">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1225330/header.jpg" alt="NBA 2K23">
+                <h3>NBA 2K23</h3>
+                <p>Лучший баскетбольный симулятор.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="page hidden">
+        <h2>Свяжитесь с нами</h2>
+        <form id="contact-form">
+            <div style="margin-bottom: 15px;">
+                <label for="name">Ваше имя:</label><br>
+                <input type="text" id="name" style="width: 100%; padding: 8px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="email">Ваш email:</label><br>
+                <input type="email" id="email" style="width: 100%; padding: 8px;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="message">Сообщение:</label><br>
+                <textarea id="message" style="width: 100%; padding: 8px; height: 100px;"></textarea>
+            </div>
+            <button type="submit" style="padding: 10px 20px; background-color: #444; color: white; border: none;">Отправить</button>
+        </form>
+        <p id="form-message" style="margin-top: 15px;"></p>
+    </div>
+
+    <footer>
+        <p>© 2025 Гутников Д.Е КЭ-108</p>
+        <a href="#main" style="color: white;">На главную</a>
+    </footer>
+
+    <script>
+        // Навигация по страницам
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Скрываем все страницы
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.add('hidden');
+                });
+                
+                // Показываем выбранную страницу
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).classList.remove('hidden');
+            });
+        });
+
+        // Обработка формы
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('form-message').textContent = 'Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.';
+            this.reset();
+            
+            setTimeout(() => {
+                document.getElementById('form-message').textContent = '';
+            }, 5000);
+        });
+
+        // Показываем главную страницу при загрузке
+        window.onload = function() {
+            document.querySelector('#main').classList.remove('hidden');
+        };
+    </script>
+</body>
+</html>

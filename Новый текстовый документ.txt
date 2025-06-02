@@ -1,0 +1,245 @@
+import sqlite3
+from sqlite3 import Error
+
+def create_connection(db_file):
+    """ Создает соединение с базой данных SQLite """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        return conn
+    except Error as e:
+        print(e)
+    return conn
+
+def create_table(conn):
+    """ Создает таблицу games """
+    try:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS games (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                developer TEXT,
+                year INTEGER,
+                genre TEXT,
+                platform TEXT
+            )
+        ''')
+        conn.commit()
+    except Error as e:
+        print(e)
+
+def initialize_database(conn):
+    """ Заполняет базу начальными данными (35 записей) """
+    games = [
+        ('The Witcher 3: Wild Hunt', 'CD Projekt Red', 2015, 'RPG', 'PC/PS4/XBOX'),
+        ('Grand Theft Auto V', 'Rockstar North', 2013, 'Action', 'PC/PS4/XBOX'),
+        ('Minecraft', 'Mojang Studios', 2011, 'Sandbox', 'Multiplatform'),
+        ('The Legend of Zelda: Breath of the Wild', 'Nintendo', 2017, 'Adventure', 'Switch'),
+        ('Red Dead Redemption 2', 'Rockstar Games', 2018, 'Action', 'PC/PS4/XBOX'),
+        ('Cyberpunk 2077', 'CD Projekt Red', 2020, 'RPG', 'PC/PS4/XBOX'),
+        ('Elden Ring', 'FromSoftware', 2022, 'RPG', 'PC/PS5/XBOX'),
+        ('Fortnite', 'Epic Games', 2017, 'Battle Royale', 'Multiplatform'),
+        ('Counter-Strike 2', 'Valve', 2023, 'FPS', 'PC'),
+        ('FIFA 23', 'EA Sports', 2022, 'Sports', 'Multiplatform'),
+        ('Among Us', 'InnerSloth', 2018, 'Party', 'Mobile/PC'),
+        ('God of War', 'Santa Monica Studio', 2018, 'Action', 'PS4'),
+        ('The Last of Us Part II', 'Naughty Dog', 2020, 'Action', 'PS4'),
+        ('Hogwarts Legacy', 'Avalanche Software', 2023, 'RPG', 'PC/PS5/XBOX'),
+        ('Stardew Valley', 'ConcernedApe', 2016, 'Simulation', 'Multiplatform'),
+        ('Valorant', 'Riot Games', 2020, 'FPS', 'PC'),
+        ('League of Legends', 'Riot Games', 2009, 'MOBA', 'PC'),
+        ('Overwatch 2', 'Blizzard', 2022, 'FPS', 'Multiplatform'),
+        ('Mario Kart 8 Deluxe', 'Nintendo', 2017, 'Racing', 'Switch'),
+        ('Animal Crossing: New Horizons', 'Nintendo', 2020, 'Simulation', 'Switch'),
+        ('Call of Duty: Warzone', 'Infinity Ward', 2020, 'Battle Royale', 'Multiplatform'),
+        ('Apex Legends', 'Respawn Entertainment', 2019, 'Battle Royale', 'Multiplatform'),
+        ('World of Warcraft', 'Blizzard', 2004, 'MMORPG', 'PC'),
+        ('The Sims 4', 'Maxis', 2014, 'Simulation', 'PC/PS4/XBOX'),
+        ('Portal 2', 'Valve', 2011, 'Puzzle', 'PC/PS3/XBOX'),
+        ('Half-Life: Alyx', 'Valve', 2020, 'VR', 'PC'),
+        ('Hades', 'Supergiant Games', 2020, 'Roguelike', 'Multiplatform'),
+        ('Genshin Impact', 'miHoYo', 2020, 'Action RPG', 'Mobile/PC/PS'),
+        ('Dark Souls III', 'FromSoftware', 2016, 'RPG', 'PC/PS4/XBOX'),
+        ('Resident Evil 4 Remake', 'Capcom', 2023, 'Survival Horror', 'Multiplatform'),
+        ('Baldur\'s Gate 3', 'Larian Studios', 2023, 'RPG', 'PC/PS5'),
+        ('Diablo IV', 'Blizzard', 2023, 'Action RPG', 'PC/PS5/XBOX'),
+        ('Starfield', 'Bethesda', 2023, 'RPG', 'PC/XBOX'),
+        ('Super Mario Odyssey', 'Nintendo', 2017, 'Platformer', 'Switch'),
+        ('Metroid Dread', 'MercurySteam', 2021, 'Action', 'Switch')
+    ]
+    
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM games")
+        if cursor.fetchone()[0] == 0:
+            cursor.executemany('''
+                INSERT INTO games (title, developer, year, genre, platform)
+                VALUES (?, ?, ?, ?, ?)
+            ''', games)
+            conn.commit()
+            print("База данных заполнена 35 записями об играх!")
+    except Error as e:
+        print(e)
+
+def add_game(conn):
+    """ Добавление новой игры в базу данных """
+    print("\n" + "="*40)
+    print("ДОБАВЛЕНИЕ НОВОЙ ИГРЫ".center(40))
+    print("="*40)
+    
+    title = input("Название игры: ")
+    developer = input("Разработчик: ")
+    year = int(input("Год выпуска: "))
+    genre = input("Жанр: ")
+    platform = input("Платформа(ы): ")
+    
+    try:
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO games (title, developer, year, genre, platform)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (title, developer, year, genre, platform))
+        conn.commit()
+        print("\n[Игра успешно добавлена в базу данных!]")
+    except Error as e:
+        print(f"Ошибка: {e}")
+
+def delete_game(conn):
+    """ Удаление игры по ID """
+    show_all_games(conn)
+    try:
+        game_id = int(input("\nВведите ID игры для удаления: "))
+        
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM games WHERE id = ?", (game_id,))
+        conn.commit()
+        
+        if cursor.rowcount > 0:
+            print(f"\n[Игра с ID {game_id} успешно удалена!]")
+        else:
+            print("\n[Игра с указанным ID не найдена!]")
+    except ValueError:
+        print("\n[Ошибка: Введите числовой ID!]")
+
+def show_all_games(conn):
+    """ Вывод всех игр в табличном формате """
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM games")
+        rows = cursor.fetchall()
+        
+        if not rows:
+            print("\n[В базе нет записей об играх!]")
+            return
+        
+        print("\n" + "="*85)
+        print("{:<3} {:<30} {:<20} {:<6} {:<15} {:<15}".format(
+            "ID", "Название", "Разработчик", "Год", "Жанр", "Платформа"))
+        print("-"*85)
+        for row in rows:
+            print("{:<3} {:<30} {:<20} {:<6} {:<15} {:<15}".format(*row))
+        print("="*85)
+        print(f"Всего игр: {len(rows)}")
+    except Error as e:
+        print(e)
+
+def search_by_genre(conn):
+    """ Поиск игр по жанру """
+    genre = input("\nВведите жанр для поиска: ")
+    
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM games WHERE genre LIKE ?", (f'%{genre}%',))
+        rows = cursor.fetchall()
+        
+        if not rows:
+            print(f"\n[Игр в жанре '{genre}' не найдено!]")
+            return
+        
+        print(f"\nРезультаты поиска ('{genre}'):")
+        print("-"*85)
+        print("{:<3} {:<30} {:<20} {:<6} {:<15} {:<15}".format(
+            "ID", "Название", "Разработчик", "Год", "Жанр", "Платформа"))
+        print("-"*85)
+        for row in rows:
+            print("{:<3} {:<30} {:<20} {:<6} {:<15} {:<15}".format(*row))
+        print(f"\nНайдено игр: {len(rows)}")
+    except Error as e:
+        print(e)
+
+def sort_by_year(conn, ascending=True):
+    """ Сортировка игр по году выпуска """
+    order = "ASC" if ascending else "DESC"
+    direction = "возрастанию" if ascending else "убыванию"
+    
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT * FROM games ORDER BY year {order}")
+        rows = cursor.fetchall()
+        
+        if not rows:
+            print("\n[В базе нет записей об играх!]")
+            return
+        
+        print(f"\nСортировка по году ({direction}):")
+        print("-"*85)
+        print("{:<3} {:<30} {:<20} {:<6} {:<15} {:<15}".format(
+            "ID", "Название", "Разработчик", "Год", "Жанр", "Платформа"))
+        print("-"*85)
+        for row in rows:
+            print("{:<3} {:<30} {:<20} {:<6} {:<15} {:<15}".format(*row))
+    except Error as e:
+        print(e)
+
+def main_menu():
+    """ Отображение главного меню """
+    print("\n" + "="*40)
+    print("БАЗА ДАННЫХ ВИДЕОИГР".center(40))
+    print("="*40)
+    print("1. Показать все игры")
+    print("2. Добавить игру")
+    print("3. Удалить игру")
+    print("4. Поиск по жанру")
+    print("5. Сортировка по году (возрастание)")
+    print("6. Сортировка по году (убывание)")
+    print("0. Выход")
+    print("="*40)
+    return input("Выберите действие: ")
+
+def main():
+    database = "games.db"
+    
+    # Инициализация базы данных
+    conn = create_connection(database)
+    if conn:
+        create_table(conn)
+        initialize_database(conn)
+        
+        # Основной цикл программы
+        while True:
+            choice = main_menu()
+            
+            if choice == '1':
+                show_all_games(conn)
+            elif choice == '2':
+                add_game(conn)
+            elif choice == '3':
+                delete_game(conn)
+            elif choice == '4':
+                search_by_genre(conn)
+            elif choice == '5':
+                sort_by_year(conn, ascending=True)
+            elif choice == '6':
+                sort_by_year(conn, ascending=False)
+            elif choice == '0':
+                conn.close()
+                print("\nРабота завершена! База данных сохранена.")
+                break
+            else:
+                print("\n[Ошибка: Некорректный ввод!]")
+    else:
+        print("[Ошибка подключения к базе данных!]")
+
+if __name__ == "__main__":
+    main()
